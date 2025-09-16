@@ -40,3 +40,40 @@ void board::createGemSprites()
         }
     }
 }
+
+bool board::verifyMatch()
+{
+    bool ismatch = false;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            bool colMatch = (j >= 2 && boardMatrix[i][j] == boardMatrix[i][j - 1] && boardMatrix[i][j] == boardMatrix[i][j - 2]);
+            bool rowMatch = i >= 2 && boardMatrix[i][j] == boardMatrix[i - 1][j] && boardMatrix[i][j] == boardMatrix[i - 2][j];
+            if (colMatch)
+            {
+                boardMatrix[i][j] = rand() % gemType;
+                boardMatrix[i][j - 1] = rand() % gemType;
+                boardMatrix[i][j - 2] = rand() % gemType;
+                ismatch = true;
+            }
+
+            if (rowMatch)
+            {
+                boardMatrix[i][j] = rand() % gemType;
+                boardMatrix[i - 1][j] = rand() % gemType;
+                boardMatrix[i - 2][j] = rand() % gemType;
+                ismatch = true;
+            }
+        }
+    }
+    return ismatch;
+}
+
+
+void board::draw(sf::RenderWindow& window)
+{
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            window.draw(sprites[i][j]);
+        }
+    }
+}
