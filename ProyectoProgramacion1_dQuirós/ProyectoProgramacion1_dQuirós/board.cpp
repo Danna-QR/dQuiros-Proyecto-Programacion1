@@ -69,11 +69,29 @@ bool board::verifyMatch()
 }
 
 
-void board::draw(sf::RenderWindow& window)
+void board::drawGemSprites(sf::RenderWindow& window)
 {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             window.draw(sprites[i][j]);
         }
     }
+}
+
+bool board::isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick)
+{
+    bool isAdjacentSameRow = rowFirstClick == rowSecondClick && (colFirstClick == colSecondClick + 1 || colFirstClick == colSecondClick - 1);
+    if (isAdjacentSameRow)
+        return true;
+
+    bool isAdjacentSameCol = colFirstClick == colSecondClick && (rowFirstClick == rowSecondClick + 1 || colSecondClick == rowSecondClick - 1);
+    if (isAdjacentSameCol)
+        return true;
+
+    return false;
+}
+
+void board::swapGems(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick)
+{
+    swap(boardMatrix[rowFirstClick][colFirstClick], boardMatrix[rowSecondClick][colSecondClick]);
 }
