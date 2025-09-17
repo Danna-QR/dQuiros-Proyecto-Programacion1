@@ -17,6 +17,11 @@ private:
 	int rowSecondClick;
 	int colSecondClick;
 	int movements = 20;
+	int points = 0;
+
+	sf::Font font;
+	sf::Text movementText;
+	sf::Text pointsText;
 
 public:
 	game();
