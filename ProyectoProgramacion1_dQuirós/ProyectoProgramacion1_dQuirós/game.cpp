@@ -57,6 +57,25 @@ void game::showPrincipalWindow()
 }
 
 
+void game::decreaseMovements(int& movements)
+{
+    if (movements > 0)
+    {
+        movements--;
+        movementText.setString("Movimientos: " + std::to_string(movements));
+    }
+    if (movements <= 0) {
+        showFinalWindow();
+    }
+}
+
+void game::sumPoints(int& points)
+{
+    points += 3 * 10;
+    pointsText.setString("Puntos: " + std::to_string(points));
+}
+
+
 void game::handleMouseClick(sf::RenderWindow& window)
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -88,10 +107,12 @@ void game::handleMouseClick(sf::RenderWindow& window)
                         }
                         else {
                             decreaseMovements(movements);
+                            sumPoints(points);
                         }
 
+                        board.createGemSprites(); 
                         firstClick = true;
-                        board.createGemSprites(); //fix
+                        
                     }
                 }
             }
@@ -102,6 +123,7 @@ void game::handleMouseClick(sf::RenderWindow& window)
         mousePressed = false;
     }
 }
+
 
 void game::showBoardWindow()
 {
@@ -140,10 +162,8 @@ void game::showBoardWindow()
     }
 }
 
-void game::decreaseMovements(int& movements)
+void game::showFinalWindow()
 {
-    if (movements > 0)
-    {
-        cout << movements--;
-    }
 }
+
+
