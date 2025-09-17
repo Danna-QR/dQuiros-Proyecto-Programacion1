@@ -17,7 +17,8 @@ void game::showPrincipalWindow()
     }
 
     sf::Sprite button(buttonTexture);
-    button.setScale(0.5f, 0.5f);//fix
+    button.setPosition(350.f, 510.f);
+    button.setScale(0.3f, 0.3f);
 
     sf::Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("assets/principal.jpg")) {
