@@ -142,9 +142,30 @@ void game::showBoardWindow()
     );
 
 
+    if (!font.loadFromFile("assets/ELEGANT TYPEWRITER Regular.ttf")) {
+        std::cout << "Error: no se pudo cargar la fuente\n";
+    }
+
+    movementText.setFont(font);
+    movementText.setCharacterSize(30);
+    movementText.setFillColor(sf::Color::White);
+    movementText.setString("Movimientos: \n " + to_string(movements) + " \n ");
+
+    pointsText.setFont(font);
+    pointsText.setCharacterSize(30);
+    pointsText.setFillColor(sf::Color::White);
+    pointsText.setString(" \n Puntos: \n " + to_string(points));
+
+    movementText.setPosition(
+        window.getSize().x - movementText.getLocalBounds().width - 35, 60.f);
+
+    pointsText.setPosition(
+        window.getSize().x - pointsText.getLocalBounds().width - 55, 150.f + 100);
+
+
+    board.createGemTextures();
     board.fillBoard();
     board.verifyMatch();
-    board.createGemTextures();
     board.createGemSprites();
 
 
@@ -157,6 +178,8 @@ void game::showBoardWindow()
         handleMouseClick(window);
         window.clear();
         window.draw(background);
+        window.draw(pointsText);
+        window.draw(movementText);
         board.drawGemSprites(window);
         window.display();
     }
@@ -164,6 +187,8 @@ void game::showBoardWindow()
 
 void game::showFinalWindow()
 {
+
+
 }
 
 
