@@ -75,6 +75,13 @@ void game::sumPoints(int& points)
     pointsText.setString("Puntos: " + std::to_string(totalPoints));
 }
 
+void game::processMatches()
+{
+    while (board.verifyMatch(points)) {
+        board.createGemSprites();
+    }
+}
+
 void game::handleMove()
 {
     board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
@@ -90,7 +97,7 @@ void game::handleMove()
     else {
         decreaseMovements(movements);
         sumPoints(points);
-
+        processMatches();
     }
     board.createGemSprites();
     firstClick = true;
@@ -170,6 +177,7 @@ void game::showBoardWindow()
     board.createGemTextures();
     board.fillBoard();
     board.verifyMatch(points);
+    processMatches();
     board.createGemSprites();
 
 
@@ -253,6 +261,7 @@ void game::showFinalWindow()
                     points = 0;
                     movements = 20;
                     board.fillBoard();
+                    processMatches();
                     board.createGemSprites();
                     showBoardWindow();
                 }
