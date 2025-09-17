@@ -71,8 +71,8 @@ void game::decreaseMovements(int& movements)
 
 void game::sumPoints(int& points)
 {
-    points += 3 * 10;
-    pointsText.setString("Puntos: " + std::to_string(points));
+    int totalPoints = points * 10;
+    pointsText.setString("Puntos: " + std::to_string(totalPoints));
 }
 
 void game::handleMove()
@@ -81,7 +81,7 @@ void game::handleMove()
     board.createGemSprites();
     std::cout << "Intercambio realizado!\n";
 
-    if (!board.verifyMatch()) {
+    if (!board.verifyMatch(points)) {
         board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
 
         std::cout << "No hubo match, intercambio revertido.\n";
@@ -169,7 +169,7 @@ void game::showBoardWindow()
 
     board.createGemTextures();
     board.fillBoard();
-    board.verifyMatch();
+    board.verifyMatch(points);
     board.createGemSprites();
 
 
