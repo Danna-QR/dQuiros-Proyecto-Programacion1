@@ -130,7 +130,7 @@ void game::showBoardWindow()
     sf::RenderWindow window(sf::VideoMode(800, 600), "Board window", sf::Style::Close);
 
     sf::Texture backgroundTexture;
-    if (!backgroundTexture.loadFromFile("assets/unnamed.png")) {
+    if (!backgroundTexture.loadFromFile("assets/backroundImage.png")) {
         std::cout << "Error: no se pudo cargar la imagen\n";
     }
 
@@ -187,8 +187,86 @@ void game::showBoardWindow()
 
 void game::showFinalWindow()
 {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "FinalWindow", sf::Style::Close);
+
+    sf::Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("assets/backroundImage.png")) {
+        std::cout << "Error: no se pudo cargar la imagen\n";
+    }
+
+    sf::Sprite background(backgroundTexture);
+
+    background.setScale(
+        float(window.getSize().x) / backgroundTexture.getSize().x,
+        float(window.getSize().y) / backgroundTexture.getSize().y
+    );
 
 
+
+    sf::Font font;
+    if (!font.loadFromFile("assets/ELEGANT TYPEWRITER Regular.ttf")) {
+        std::cout << "Error cargando fuente.\n";
+    }
+
+    sf::Text finalScoreText;
+    finalScoreText.setFont(font);
+    finalScoreText.setCharacterSize(50);
+    finalScoreText.setFillColor(sf::Color::White);
+    finalScoreText.setString("Puntaje final: " + std::to_string(points));
+    finalScoreText.setPosition(210.f, 70.f);
+
+    sf::Texture restartTexture;
+    if (!restartTexture.loadFromFile("assets/playAgain.png")) {
+        std::cout << "Error cargando imagen restart.png\n";
+    }
+
+    sf::Texture exitTexture;
+    if (!exitTexture.loadFromFile("assets/exit.png")) {
+        std::cout << "Error cargando imagen exit.png\n";
+    }
+
+    sf::Sprite restartButton(restartTexture);
+    restartButton.setPosition(130.f, 350.f);
+    restartButton.setScale(0.5f, 0.5f); 
+
+    sf::Sprite exitButton(exitTexture);
+    exitButton.setPosition(500.f, 350.f);
+    exitButton.setScale(0.5f, 0.5f);
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    window.close();
+
+                    points = 0;
+                    movements = 20;
+                    board.fillBoard();
+                    board.createGemSprites();
+                    showBoardWindow();
+                }
+
+                if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    window.close();
+                    exit(0);
+                }
+            }
+        }
+
+        window.clear();
+        window.draw(background);;
+        window.draw(finalScoreText);
+        window.draw(restartButton);
+        window.draw(exitButton);
+        window.display();
+    }
 }
 
 
