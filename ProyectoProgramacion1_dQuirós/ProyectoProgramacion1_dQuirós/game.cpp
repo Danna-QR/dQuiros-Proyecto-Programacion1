@@ -75,6 +75,26 @@ void game::sumPoints(int& points)
     pointsText.setString("Puntos: " + std::to_string(points));
 }
 
+void game::handleMove()
+{
+    board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
+    board.createGemSprites();
+    std::cout << "Intercambio realizado!\n";
+
+    if (!board.verifyMatch()) {
+        board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
+
+        std::cout << "No hubo match, intercambio revertido.\n";
+    }
+
+    else {
+        decreaseMovements(movements);
+        sumPoints(points);
+
+    }
+    board.createGemSprites();
+    firstClick = true;
+}
 
 void game::handleMouseClick(sf::RenderWindow& window)
 {
@@ -96,23 +116,7 @@ void game::handleMouseClick(sf::RenderWindow& window)
                     colSecondClick = currentCol;
 
                     if (board.isAdjacent(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick)) {
-
-                        board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
-                        board.createGemSprites();
-
-                        if (!board.verifyMatch()) {
-
-                            board.swapGems(rowSecondClick, colSecondClick, rowFirstClick, colFirstClick);
-
-                        }
-                        else {
-                            decreaseMovements(movements);
-                            sumPoints(points);
-                        }
-
-                        board.createGemSprites(); 
-                        firstClick = true;
-                        
+                        handleMove(); 
                     }
                 }
             }
