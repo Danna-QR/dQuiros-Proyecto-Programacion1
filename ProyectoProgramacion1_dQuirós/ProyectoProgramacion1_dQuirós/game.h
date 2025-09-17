@@ -28,5 +28,7 @@ public:
 	void showPrincipalWindow();
 	void showBoardWindow();
 	void  decreaseMovements(int& movements);
+	void  sumPoints(int& points);
 	void handleMouseClick(sf::RenderWindow& window);
+	void showFinalWindow();
 };
