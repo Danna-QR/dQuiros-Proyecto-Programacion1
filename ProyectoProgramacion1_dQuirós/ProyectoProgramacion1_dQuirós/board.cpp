@@ -41,7 +41,7 @@ void board::createGemSprites()
     }
 }
 
-bool board::verifyMatch()
+bool board::verifyMatch(int& points)
 {
     bool ismatch = false;
     for (int i = 0; i < rows; i++) {
@@ -50,17 +50,17 @@ bool board::verifyMatch()
             bool rowMatch = i >= 2 && boardMatrix[i][j] == boardMatrix[i - 1][j] && boardMatrix[i][j] == boardMatrix[i - 2][j];
             if (colMatch)
             {
-                boardMatrix[i][j] = rand() % gemType;
-                boardMatrix[i][j - 1] = rand() % gemType;
-                boardMatrix[i][j - 2] = rand() % gemType;
+                boardMatrix[i][j] = rand() % gemType, points++;
+                boardMatrix[i][j - 1] = rand() % gemType, points++;
+                boardMatrix[i][j - 2] = rand() % gemType, points++;
                 ismatch = true;
             }
 
             if (rowMatch)
             {
-                boardMatrix[i][j] = rand() % gemType;
-                boardMatrix[i - 1][j] = rand() % gemType;
-                boardMatrix[i - 2][j] = rand() % gemType;
+                boardMatrix[i][j] = rand() % gemType, points++;
+                boardMatrix[i - 1][j] = rand() % gemType, points++;
+                boardMatrix[i - 2][j] = rand() % gemType, points++;
                 ismatch = true;
             }
         }

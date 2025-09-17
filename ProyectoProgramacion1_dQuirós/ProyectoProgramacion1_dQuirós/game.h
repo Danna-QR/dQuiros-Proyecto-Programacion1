@@ -30,6 +30,7 @@ public:
 	void  decreaseMovements(int& movements);
 	void  sumPoints(int& points);
 	void handleMove();
+	void processMatches();
 	void handleMouseClick(sf::RenderWindow& window);
 	void showFinalWindow();
 };

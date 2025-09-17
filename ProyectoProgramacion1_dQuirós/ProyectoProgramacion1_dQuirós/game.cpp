@@ -17,7 +17,8 @@ void game::showPrincipalWindow()
     }
 
     sf::Sprite button(buttonTexture);
-    button.setScale(0.5f, 0.5f);//fix
+    button.setPosition(350.f, 510.f);
+    button.setScale(0.3f, 0.3f);
 
     sf::Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("assets/principal.jpg")) {
@@ -71,8 +72,15 @@ void game::decreaseMovements(int& movements)
 
 void game::sumPoints(int& points)
 {
-    points += 3 * 10;
-    pointsText.setString("Puntos: " + std::to_string(points));
+    int totalPoints = points * 10;
+    pointsText.setString("Puntos: " + std::to_string(totalPoints));
+}
+
+void game::processMatches()
+{
+    while (board.verifyMatch(points)) {
+        board.createGemSprites();
+    }
 }
 
 void game::handleMove()
@@ -81,7 +89,7 @@ void game::handleMove()
     board.createGemSprites();
     std::cout << "Intercambio realizado!\n";
 
-    if (!board.verifyMatch()) {
+    if (!board.verifyMatch(points)) {
         board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
 
         std::cout << "No hubo match, intercambio revertido.\n";
@@ -90,7 +98,7 @@ void game::handleMove()
     else {
         decreaseMovements(movements);
         sumPoints(points);
-
+        processMatches();
     }
     board.createGemSprites();
     firstClick = true;
@@ -169,7 +177,8 @@ void game::showBoardWindow()
 
     board.createGemTextures();
     board.fillBoard();
-    board.verifyMatch();
+    board.verifyMatch(points);
+    processMatches();
     board.createGemSprites();
 
 
@@ -253,6 +262,7 @@ void game::showFinalWindow()
                     points = 0;
                     movements = 20;
                     board.fillBoard();
+                    processMatches();
                     board.createGemSprites();
                     showBoardWindow();
                 }

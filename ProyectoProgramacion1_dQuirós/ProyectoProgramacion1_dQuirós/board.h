@@ -15,7 +15,7 @@ public:
     void fillBoard();
     void createGemTextures();
     void createGemSprites();
-    bool verifyMatch();
+    bool verifyMatch(int& points);
     void drawGemSprites(sf::RenderWindow& window);
 
     bool isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick);
