@@ -48,6 +48,7 @@ bool board::verifyMatch(int& points)
         for (int j = 0; j < cols; j++) {
             bool colMatch = (j >= 2 && boardMatrix[i][j] == boardMatrix[i][j - 1] && boardMatrix[i][j] == boardMatrix[i][j - 2]);
             bool rowMatch = i >= 2 && boardMatrix[i][j] == boardMatrix[i - 1][j] && boardMatrix[i][j] == boardMatrix[i - 2][j];
+            // CHECK: Código muy anidado, máximo 3 anidaciones
             if (colMatch)
             {
                 boardMatrix[i][j] = rand() % gemType, points++;
@@ -81,11 +82,11 @@ void board::drawGemSprites(sf::RenderWindow& window)
 bool board::isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick)
 {
     bool isAdjacentSameRow = rowFirstClick == rowSecondClick && (colFirstClick == colSecondClick + 1 || colFirstClick == colSecondClick - 1);
-    if (isAdjacentSameRow)
+    if (isAdjacentSameRow)// CHECK: Los if deben tener brackets
         return true;
 
     bool isAdjacentSameCol = colFirstClick == colSecondClick && (rowFirstClick == rowSecondClick + 1 || colSecondClick == rowSecondClick - 1);
-    if (isAdjacentSameCol)
+    if (isAdjacentSameCol)// CHECK: Los if deben tener brackets
         return true;
 
     return false;

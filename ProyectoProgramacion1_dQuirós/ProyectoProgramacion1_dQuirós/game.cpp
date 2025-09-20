@@ -9,7 +9,7 @@ void game::showPrincipalWindow()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Match - 3", sf::Style::Close);
 
-    bool openBoardWindow = false;
+    bool openBoardWindow = false;// CHECK: debe seguir el estandar de nombres para variables booleanas
 
     sf::Texture buttonTexture;
     if (!buttonTexture.loadFromFile("assets/play.png")) {
@@ -34,7 +34,8 @@ void game::showPrincipalWindow()
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            // CHECK: Código muy anidado, máximo 3 anidaciones
+            if (event.type == sf::Event::Closed)// CHECK: Los if deben tener brackets
                 window.close();
 
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
@@ -111,7 +112,7 @@ void game::handleMouseClick(sf::RenderWindow& window)
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             int currentCol = mousePosition.x / pixelSize;
             int currentRow = mousePosition.y / pixelSize;
-
+            // CHECK: Código muy anidado, máximo 3 anidaciones
             if (currentCol >= 0 && currentCol < cols && currentRow >= 0 && currentRow < rows) {
 
                 if (firstClick) {
@@ -185,7 +186,7 @@ void game::showBoardWindow()
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed)// CHECK: Los if deben tener brackets
                 window.close();
         }
         handleMouseClick(window);
@@ -249,6 +250,7 @@ void game::showFinalWindow()
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
+            // CHECK: Código muy anidado, máximo 3 anidaciones
             if (event.type == sf::Event::Closed) {
                 window.close();
             }

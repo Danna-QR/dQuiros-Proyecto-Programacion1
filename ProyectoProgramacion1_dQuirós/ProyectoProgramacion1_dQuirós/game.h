@@ -11,8 +11,8 @@ class game
 private:
 	board board;
 
-	bool firstClick = true;
-	bool mousePressed = false;
+	bool firstClick = true;// CHECK: debe seguir el estandar de nombres para variables booleanas
+	bool mousePressed = false; // CHECK: debe seguir el estandar de nombres para variables booleanas
 	int rowFirstClick, colFirstClick;
 	int rowSecondClick;
 	int colSecondClick;
