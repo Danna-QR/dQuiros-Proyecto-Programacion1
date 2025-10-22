@@ -392,3 +392,17 @@ void game::increaseLevel() {
     }
 }
 
+
+void game::verifyEndGame()
+{
+    if (movements <= 0)
+    {
+        if (currentCount >= targetGemCount) {
+
+            showFinalLevelWindow();
+        }
+        else {
+            showGameOverdWindow();
+        }
+    }
+}

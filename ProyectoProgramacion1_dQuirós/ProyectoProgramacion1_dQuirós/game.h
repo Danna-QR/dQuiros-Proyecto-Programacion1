@@ -42,4 +42,5 @@ public:
 	void showGameOverdWindow();
 	void handleLevels(int level);
 	void increaseLevel();
+	void verifyEndGame();
 };
