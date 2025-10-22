@@ -102,23 +102,23 @@ void game::handleMove()
         processMatches();
     }
     board.createGemSprites();
-    firstClick = true;
+    isFirstClick = true;
 }
 
 void game::handleMouseClick(sf::RenderWindow& window)
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        if (!mousePressed) { 
+        if (!isMousePressed) { 
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             int currentCol = mousePosition.x / pixelSize;
             int currentRow = mousePosition.y / pixelSize;
             // CHECK: Código muy anidado, máximo 3 anidaciones
             if (currentCol >= 0 && currentCol < cols && currentRow >= 0 && currentRow < rows) {
 
-                if (firstClick) {
+                if (isFirstClick) {
                     rowFirstClick = currentRow;
                     colFirstClick = currentCol;
-                    firstClick = false;
+                    isFirstClick = false;
                 }
                 else {
                     rowSecondClick = currentRow;
@@ -129,11 +129,11 @@ void game::handleMouseClick(sf::RenderWindow& window)
                     }
                 }
             }
-            mousePressed = true; 
+            isMousePressed = true;
         }
     }
     else {
-        mousePressed = false;
+        isMousePressed = false;
     }
 }
 
