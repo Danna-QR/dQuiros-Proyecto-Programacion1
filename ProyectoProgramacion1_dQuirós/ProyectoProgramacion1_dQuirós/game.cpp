@@ -199,7 +199,7 @@ void game::showBoardWindow()
     }
 }
 
-void game::showFinalWindow()
+void game::showFinalLevelWindow()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "FinalWindow", sf::Style::Close);
 

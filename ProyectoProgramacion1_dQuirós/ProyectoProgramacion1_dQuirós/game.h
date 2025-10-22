@@ -37,7 +37,7 @@ public:
 	void handleMove();
 	void processMatches();
 	void handleMouseClick(sf::RenderWindow& window);
-	void showFinalWindow();
+	void showFinalLevelWindow();
 
 	void showGameOverdWindow();
 	void handleLevels(int level);
