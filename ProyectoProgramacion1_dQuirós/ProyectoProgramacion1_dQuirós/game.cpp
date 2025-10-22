@@ -174,18 +174,18 @@ void game::showBoardWindow()
 
 
     board.createGemTextures();
-    board.fillBoard();
-
-    board.verifyMatch(points);
+    board.isVerifyMatch(targetGemColor, currentCount, points);
+    board.fillBoard(); 
     processMatches();
     board.createGemSprites();
-
+    handleLevels(currentLevel)
 
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)// CHECK: Los if deben tener brackets
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
         }
         handleMouseClick(window);
         window.clear();
@@ -294,6 +294,7 @@ void game::showFinalLevelWindow()
         window.draw(finalScoreText);
         window.draw(restartButton);
         window.draw(exitButton);
+        window.draw(nextLevelButton);
         window.display();
     }
 }
