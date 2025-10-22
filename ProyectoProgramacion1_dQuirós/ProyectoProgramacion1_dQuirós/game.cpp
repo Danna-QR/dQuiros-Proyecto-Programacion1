@@ -58,7 +58,6 @@ void game::showPrincipalWindow()
     }
 }
 
-
 void game::decreaseMovements(int& movements)
 {
     if (movements > 0)
@@ -66,9 +65,7 @@ void game::decreaseMovements(int& movements)
         movements--;
         movementText.setString("Movimientos: " + std::to_string(movements));
     }
-    if (movements <= 0) {
-        showFinalWindow();
-    }
+
 }
 
 void game::sumPoints(int& points)
@@ -383,7 +380,7 @@ void game::handleLevels(int level)
 void game::increaseLevel() {
     int nextLevel = currentLevel + 1;
 
-    if (nextLevel > 3) { //  solo hay 3 niveles
+    if (nextLevel > 3) {
         cout << "¡Felicidades! Completaste todos los niveles\n";
         showFinalLevelWindow();
     }
