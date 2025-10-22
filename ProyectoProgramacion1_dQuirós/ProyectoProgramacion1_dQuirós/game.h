@@ -38,4 +38,6 @@ public:
 	void processMatches();
 	void handleMouseClick(sf::RenderWindow& window);
 	void showFinalWindow();
+
+	void showGameOverdWindow();
 };
