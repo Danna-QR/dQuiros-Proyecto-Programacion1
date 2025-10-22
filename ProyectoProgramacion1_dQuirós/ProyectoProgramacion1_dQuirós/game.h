@@ -11,8 +11,8 @@ class game
 private:
 	board board;
 
-	bool isFirstClick = true;// CHECK: debe seguir el estandar de nombres para variables booleanas
-	bool isMousePressed = false; // CHECK: debe seguir el estandar de nombres para variables booleanas
+	bool isFirstClick = true;
+	bool isMousePressed = false;
 	int rowFirstClick, colFirstClick;
 	int rowSecondClick;
 	int colSecondClick;
@@ -44,4 +44,6 @@ public:
 	void increaseLevel();
 	void verifyEndGame();
 	void startNewLevel();
+
+	void animateGravity(sf::RenderWindow& window);
 };

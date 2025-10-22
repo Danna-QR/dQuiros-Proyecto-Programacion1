@@ -171,7 +171,6 @@ bool board::applyGravity()
             }
         }
     }
-
     return moved; 
 }
 

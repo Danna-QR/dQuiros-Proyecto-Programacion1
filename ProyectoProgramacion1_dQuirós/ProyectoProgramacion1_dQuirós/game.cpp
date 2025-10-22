@@ -435,3 +435,43 @@ void game::startNewLevel()
 
     handleLevels(currentLevel);
 }
+
+void game::animateGravity(sf::RenderWindow& window)
+{
+    bool needGravity = true;
+
+    while (needGravity)
+    {
+        needGravity = board.isVerifyMatch(targetGemColor, currentCount, points);
+
+        while (board.applyGravityStep())
+        {
+            board.createGemSprites();
+            window.clear();
+
+            sf::Texture backgroundTexture;
+            if (!backgroundTexture.loadFromFile("assets/backroundImage.png")) {
+                cout << "Error cargando background\n";
+            }
+            sf::Sprite background(backgroundTexture);
+            background.setScale(
+                float(window.getSize().x) / backgroundTexture.getSize().x,
+                float(window.getSize().y) / backgroundTexture.getSize().y
+            );
+            window.draw(background);
+
+            window.draw(pointsText);
+            window.draw(movementText);
+                       
+            board.draw(window);
+            
+            window.display();
+            sf::sleep(sf::milliseconds(50)); 
+        }        
+        board.fillEmptyCells();
+        board.createGemSprites();
+        needGravity = board.isVerifyMatch(targetGemColor, currentCount, points);
+    }
+    sf::sleep(sf::milliseconds(300));
+    verifyEndGame();
+}
