@@ -355,3 +355,28 @@ void game::showGameOverdWindow()
     }
 }
 
+
+void game::handleLevels(int level)
+{
+    currentLevel = level;
+
+    if (level == 1) {
+        targetGemColor = 0;   
+        targetGemCount = 15;
+        currentCount = 0;
+        cout << "Nivel 1: elimina 15 gemas rojas\n";
+    }
+    if (level == 2) {
+        targetGemColor = 1;   
+        targetGemCount = 25;
+        currentCount = 0;
+        cout << "Nivel 2: elimina 25 gemas verdes\n";
+    }
+    if (level == 3) {
+        targetGemColor = 2;  
+        targetGemCount = 30;
+        currentCount = 0;
+        cout << "Nivel 3: elimina 30 gemas azules\n";
+    }
+}
+

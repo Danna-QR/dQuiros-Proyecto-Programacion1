@@ -40,4 +40,6 @@ public:
 	void showFinalWindow();
 
 	void showGameOverdWindow();
+	void handleLevels(int level);
+
 };
