@@ -131,7 +131,7 @@ void board::verifyHorizontalStreak(int firstRow, int firstCol,
 void board::verifyVerticalStreak(int firstRow, int firstCol, int targetColor,
                                  int& currentCount, int& points, bool& isMatch)
 {
- 
+
     if (minStreakValues < 3)
     {
         return;}

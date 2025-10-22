@@ -237,6 +237,12 @@ void game::showFinalLevelWindow()
         std::cout << "Error cargando imagen exit.png\n";
     }
 
+    //next
+    sf::Texture nextLevelTexture;
+    if (!nextLevelTexture.loadFromFile("assets/nextLevel.jpg")) {
+        std::cout << "Error cargando imagen nextLevel.jpg\n";
+    }
+
     sf::Sprite restartButton(restartTexture);
     restartButton.setPosition(130.f, 350.f);
     restartButton.setScale(0.5f, 0.5f); 
@@ -244,6 +250,11 @@ void game::showFinalLevelWindow()
     sf::Sprite exitButton(exitTexture);
     exitButton.setPosition(500.f, 350.f);
     exitButton.setScale(0.5f, 0.5f);
+
+    //Boton next
+    sf::Sprite nextLevelButton(nextLevelTexture);
+    nextLevelButton.setPosition(250.f, 190.f);
+    nextLevelButton.setScale(0.5f, 0.5f);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -255,6 +266,15 @@ void game::showFinalLevelWindow()
 
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                if (nextLevelButton.getGlobalBounds().contains(mousePos.x, mousePos.y))
+                {
+                    increaseLevel();
+                    window.close();
+                    startNewLevel();  
+
+                }
+
 
                 if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     window.close();
