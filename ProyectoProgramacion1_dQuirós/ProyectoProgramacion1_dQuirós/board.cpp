@@ -46,23 +46,24 @@ bool board::isVerifyMatch(int targetColor, int& currentCount, int& points)
     bool ismatch = false;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            bool colMatch = (j >= 2 && boardMatrix[i][j] == boardMatrix[i][j - 1] && boardMatrix[i][j] == boardMatrix[i][j - 2]);
-            bool rowMatch = i >= 2 && boardMatrix[i][j] == boardMatrix[i - 1][j] && boardMatrix[i][j] == boardMatrix[i - 2][j];
-            // CHECK: Código muy anidado, máximo 3 anidaciones
-            if (colMatch)
-            {
-                boardMatrix[i][j] = rand() % gemType, points++;
-                boardMatrix[i][j - 1] = rand() % gemType, points++;
-                boardMatrix[i][j - 2] = rand() % gemType, points++;
-                ismatch = true;
-            }
+            
+            bool colMatch = (i >= minStreakValues && boardMatrix[i][j] != -1 &&
+                boardMatrix[i][j] == boardMatrix[i - 1][j] &&
+                boardMatrix[i][j] == boardMatrix[i - 2][j]);
 
-            if (rowMatch)
-            {
-                boardMatrix[i][j] = rand() % gemType, points++;
-                boardMatrix[i - 1][j] = rand() % gemType, points++;
-                boardMatrix[i - 2][j] = rand() % gemType, points++;
-                ismatch = true;
+            bool rowMatch = (j >= minStreakValues && boardMatrix[i][j] != -1 &&
+                boardMatrix[i][j] == boardMatrix[i][j - 1] &&
+                boardMatrix[i][j] == boardMatrix[i][j - 2]);
+
+            if (colMatch && rowMatch) {
+                processVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
+                processHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
+            }
+            else if (colMatch) {
+                processVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
+            }
+            else if (rowMatch) {
+                processHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
         }
     }
