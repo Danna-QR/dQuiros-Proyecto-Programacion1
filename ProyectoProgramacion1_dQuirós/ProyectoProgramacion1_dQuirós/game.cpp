@@ -237,7 +237,7 @@ void game::showFinalLevelWindow()
         std::cout << "Error cargando imagen exit.png\n";
     }
 
-    //next
+   
     sf::Texture nextLevelTexture;
     if (!nextLevelTexture.loadFromFile("assets/nextLevel.jpg")) {
         std::cout << "Error cargando imagen nextLevel.jpg\n";
@@ -251,7 +251,7 @@ void game::showFinalLevelWindow()
     exitButton.setPosition(500.f, 350.f);
     exitButton.setScale(0.5f, 0.5f);
 
-    //Boton next
+
     sf::Sprite nextLevelButton(nextLevelTexture);
     nextLevelButton.setPosition(250.f, 190.f);
     nextLevelButton.setScale(0.5f, 0.5f);
@@ -278,13 +278,8 @@ void game::showFinalLevelWindow()
 
                 if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     window.close();
-
-                    points = 0;
-                    movements = 20;
-                    board.fillBoard();
-                    processMatches();
-                    board.createGemSprites();
-                    showBoardWindow();
+                    handleLevels(currentLevel);
+                    startNewLevel();
                 }
 
                 if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
