@@ -4,6 +4,8 @@ const int rows = 8;
 const int cols = 8;
 const int pixelSize = 70;
 const int gemType = 5;
+const int minStreakValues = 3;
+
 class board
 {
 private:
@@ -20,6 +22,14 @@ public:
 
     bool isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick);
     void swapGems(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick);
+
+    void verifyHorizontalStreak(int firstRow, int firstCol,
+        int targetColor, int& currentCount,
+        int& points, bool& isMatch);
+
+    void verifyVerticalStreak(int firstRow, int firstCol,
+        int targetColor, int& currentCount,
+        int& points, bool& isMatch);
 
 };
 

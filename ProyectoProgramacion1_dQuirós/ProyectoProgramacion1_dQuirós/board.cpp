@@ -56,14 +56,14 @@ bool board::isVerifyMatch(int targetColor, int& currentCount, int& points)
                 boardMatrix[i][j] == boardMatrix[i][j - 2]);
 
             if (isColMatch && isRrowMatch) {
-                processVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
-                processHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
+                verifyVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
+                verifyHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
             else if (isColMatch) {
-                processVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
+                verifyVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
             else if (isRrowMatch) {
-                processHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
+                verifyHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
         }
     }
@@ -98,4 +98,60 @@ bool board::isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick,
 void board::swapGems(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick)
 {
     swap(boardMatrix[rowFirstClick][colFirstClick], boardMatrix[rowSecondClick][colSecondClick]);
+}
+
+
+void board::verifyHorizontalStreak(int firstRow, int firstCol,
+    int targetColor, int& currentCount,
+    int& points, bool& isMatch)
+{
+    if (minStreakValues < 3)
+    {
+        return;
+    }  
+
+    isMatch = true;
+    int gemColor = 0;
+    int currentRow = 0;
+    int currentCol = 0;
+
+    for (int i = 0; i < minStreakValues; i++) {
+         currentRow = firstRow;
+         currentCol = firstCol - i;
+
+         gemColor = boardMatrix[currentRow][currentCol];
+        if (gemColor != -1) {
+            points++;
+            if (gemColor == targetColor) currentCount++;
+            boardMatrix[currentRow][currentCol] = -1;
+        }
+    }
+}
+
+void board::verifyVerticalStreak(int firstRow, int firstCol, int targetColor,
+                                 int& currentCount, int& points, bool& isMatch)
+{
+ 
+    if (minStreakValues < 3)
+    {
+        return;}
+
+    isMatch = true;
+    int gemColor = 0;
+    int currentRow = 0;
+    int currentCol = 0;
+
+    for (int i = 0; i < minStreakValues; i++) {
+         currentRow = firstRow - i;
+         currentCol = firstCol;
+
+         gemColor = boardMatrix[currentRow][currentCol];
+        if (gemColor != -1) {
+            points++;
+            if (gemColor == targetColor) {
+                currentCount++;
+                boardMatrix[currentRow][currentCol] = -1;
+            }
+        }
+    }
 }
