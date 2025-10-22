@@ -15,8 +15,8 @@ public:
     void fillBoard();
     void createGemTextures();
     void createGemSprites();
-    bool verifyMatch(int& points);// CHECK: debe seguir el estandar de nombres para funciones booleanas
     void drawGemSprites(sf::RenderWindow& window);
+    bool isVerifyMatch(int targetColor, int& currentCount, int& points);
 
     bool isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick);
     void swapGems(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick);

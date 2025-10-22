@@ -41,7 +41,7 @@ void board::createGemSprites()
     }
 }
 
-bool board::verifyMatch(int& points)
+bool board::isVerifyMatch(int targetColor, int& currentCount, int& points)
 {
     bool ismatch = false;
     for (int i = 0; i < rows; i++) {

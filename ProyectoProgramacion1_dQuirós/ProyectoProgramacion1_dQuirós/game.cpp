@@ -76,7 +76,7 @@ void game::sumPoints(int& points)
 
 void game::processMatches()
 {
-    while (board.verifyMatch(points)) {
+    while (board.isVerifyMatch(int targetColor, int& currentCount, int& points)) {
         board.createGemSprites();
     }
 }
@@ -87,7 +87,7 @@ void game::handleMove()
     board.createGemSprites();
     std::cout << "Intercambio realizado!\n";
 
-    if (!board.verifyMatch(points)) {
+    if (!board.isVerifyMatch(int targetColor, int& currentCount, int& points)) {
         board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
 
         std::cout << "No hubo match, intercambio revertido.\n";
@@ -175,6 +175,7 @@ void game::showBoardWindow()
 
     board.createGemTextures();
     board.fillBoard();
+
     board.verifyMatch(points);
     processMatches();
     board.createGemSprites();
