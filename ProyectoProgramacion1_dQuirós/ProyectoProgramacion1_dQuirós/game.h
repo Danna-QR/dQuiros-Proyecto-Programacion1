@@ -34,7 +34,7 @@ public:
 	void showBoardWindow();
 	void  decreaseMovements(int& movements);
 	void  sumPoints(int& points);
-	void handleMove();
+	void handleMove(sf::RenderWindow& window);
 	void processMatches();
 	void handleMouseClick(sf::RenderWindow& window);
 	void showFinalLevelWindow();

@@ -81,7 +81,7 @@ void game::processMatches()
     }
 }
 
-void game::handleMove()
+void game::handleMove(sf::RenderWindow& window)
 {
     board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
     board.createGemSprites();
@@ -213,8 +213,6 @@ void game::showFinalLevelWindow()
         float(window.getSize().y) / backgroundTexture.getSize().y
     );
 
-
-
     sf::Font font;
     if (!font.loadFromFile("assets/ELEGANT TYPEWRITER Regular.ttf")) {
         std::cout << "Error cargando fuente.\n";
@@ -236,7 +234,6 @@ void game::showFinalLevelWindow()
     if (!exitTexture.loadFromFile("assets/exit.png")) {
         std::cout << "Error cargando imagen exit.png\n";
     }
-
    
     sf::Texture nextLevelTexture;
     if (!nextLevelTexture.loadFromFile("assets/nextLevel.jpg")) {
@@ -272,7 +269,6 @@ void game::showFinalLevelWindow()
                     increaseLevel();
                     window.close();
                     startNewLevel();  
-
                 }
 
 
