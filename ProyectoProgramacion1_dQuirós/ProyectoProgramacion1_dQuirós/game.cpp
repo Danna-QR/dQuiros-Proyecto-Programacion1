@@ -9,7 +9,7 @@ void game::showPrincipalWindow()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Match - 3", sf::Style::Close);
 
-    bool openBoardWindow = false;// CHECK: debe seguir el estandar de nombres para variables booleanas
+    bool isOpenBoardWindow = false;// CHECK: debe seguir el estandar de nombres para variables booleanas
 
     sf::Texture buttonTexture;
     if (!buttonTexture.loadFromFile("assets/play.png")) {
