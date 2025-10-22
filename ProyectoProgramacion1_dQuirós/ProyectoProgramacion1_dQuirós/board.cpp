@@ -155,3 +155,33 @@ void board::verifyVerticalStreak(int firstRow, int firstCol, int targetColor,
         }
     }
 }
+
+
+bool board::applyGravity()
+{
+    bool moved = false;
+
+    for (int j = 0; j < cols; ++j) {
+        for (int i = rows - 2; i >= 0; --i) {
+            if (boardMatrix[i][j] != -1 && boardMatrix[i + 1][j] == -1) {
+
+                boardMatrix[i + 1][j] = boardMatrix[i][j];
+                boardMatrix[i][j] = -1;
+                moved = true;
+            }
+        }
+    }
+
+    return moved; 
+}
+
+void board::fillEmptyCells()
+{
+    for (int j = 0; j < cols; ++j) {
+        for (int i = 0; i < rows; ++i) {
+            if (boardMatrix[i][j] == -1) {
+                boardMatrix[i][j] = rand() % gemType;
+            }
+        }
+    }
+}

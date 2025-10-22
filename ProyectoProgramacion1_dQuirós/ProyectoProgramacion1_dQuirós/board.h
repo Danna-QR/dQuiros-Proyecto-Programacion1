@@ -26,10 +26,13 @@ public:
     void verifyHorizontalStreak(int firstRow, int firstCol,
         int targetColor, int& currentCount,
         int& points, bool& isMatch);
-
     void verifyVerticalStreak(int firstRow, int firstCol,
         int targetColor, int& currentCount,
         int& points, bool& isMatch);
+
+   
+    bool applyGravity();
+    void fillEmptyCells();
 
 };
 
