@@ -16,13 +16,21 @@ void board::fillBoard()
     }
 }
 
-void board::createGemTextures()
-{
-    gemTextures[0].setType(0, "assets/gemaRoja.png");
-    gemTextures[1].setType(1, "assets/gemaVerde.png");
-    gemTextures[2].setType(2, "assets/gemaAzul.png");
-    gemTextures[3].setType(3, "assets/gemaAmarilla.png");
-    gemTextures[4].setType(4, "assets/gemaMorada.png");
+void board::createGemTextures() {
+    gemTextures[0] = new NormalGem();
+    gemTextures[0]->setType(0, "assets/gemaRoja.png");
+
+    gemTextures[1] = new NormalGem();
+    gemTextures[1]->setType(1, "assets/gemaVerde.png");
+
+    gemTextures[2] = new NormalGem();
+    gemTextures[2]->setType(2, "assets/gemaAzul.png");
+
+    gemTextures[3] = new NormalGem();
+    gemTextures[3]->setType(3, "assets/gemaAmarilla.png");
+
+    gemTextures[4] = new NormalGem();
+    gemTextures[4]->setType(4, "assets/gemaMorada.png");
 }
 
 void board::createGemSprites()
@@ -30,7 +38,11 @@ void board::createGemSprites()
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
 
-            sf::Texture& spriteTexture = gemTextures[boardMatrix[i][j]].getTexture();
+            if (gemIndex == -1) {             
+                continue;
+            }
+
+            sf::Texture& spriteTexture = gemTextures[boardMatrix[i][j]]->getTexture();
 
             sprites[i][j].setTexture(spriteTexture);
             sprites[i][j].setPosition(j * pixelSize, i * pixelSize);

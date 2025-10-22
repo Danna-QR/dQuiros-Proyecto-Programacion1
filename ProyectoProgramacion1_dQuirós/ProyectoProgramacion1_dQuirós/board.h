@@ -10,7 +10,7 @@ class board
 {
 private:
     int boardMatrix[rows][cols];
-    gem gemTextures[gemType];    
+    gem* gemTextures[gemType];    
     sf::Sprite sprites[rows][cols];
 
 public:
