@@ -380,3 +380,18 @@ void game::handleLevels(int level)
     }
 }
 
+void game::increaseLevel() {
+    int nextLevel = currentLevel + 1;
+
+    if (nextLevel > 3) { //  solo hay 3 niveles
+        cout << "¡Felicidades! Completaste todos los niveles\n";
+        showFinalLevelWindow();
+    }
+    else {
+        handleLevels(nextLevel);
+        board.fillBoard();
+        processMatches();
+        board.createGemSprites();
+    }
+}
+
