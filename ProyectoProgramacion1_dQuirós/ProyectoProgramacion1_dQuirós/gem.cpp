@@ -6,6 +6,7 @@ gem::gem()
     gemType = 0;
 }
 
+gem::~gem() = default;
 
 void gem::setType(int gemIndex, const string& textureFile)
 {
