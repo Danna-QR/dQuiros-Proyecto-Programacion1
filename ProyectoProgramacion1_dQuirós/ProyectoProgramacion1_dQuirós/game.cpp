@@ -9,7 +9,7 @@ void game::showPrincipalWindow()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Match - 3", sf::Style::Close);
 
-    bool openBoardWindow = false;// CHECK: debe seguir el estandar de nombres para variables booleanas
+    bool isOpenBoardWindow = false;
 
     sf::Texture buttonTexture;
     if (!buttonTexture.loadFromFile("assets/play.png")) {
@@ -58,7 +58,6 @@ void game::showPrincipalWindow()
     }
 }
 
-
 void game::decreaseMovements(int& movements)
 {
     if (movements > 0)
@@ -66,9 +65,7 @@ void game::decreaseMovements(int& movements)
         movements--;
         movementText.setString("Movimientos: " + std::to_string(movements));
     }
-    if (movements <= 0) {
-        showFinalWindow();
-    }
+
 }
 
 void game::sumPoints(int& points)
@@ -79,18 +76,18 @@ void game::sumPoints(int& points)
 
 void game::processMatches()
 {
-    while (board.verifyMatch(points)) {
+    while (board.isVerifyMatch(int targetColor, int& currentCount, int& points)) {
+        board.fillEmptyCells();
         board.createGemSprites();
     }
 }
 
-void game::handleMove()
+void game::handleMove(sf::RenderWindow& window)
 {
     board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
-    board.createGemSprites();
     std::cout << "Intercambio realizado!\n";
 
-    if (!board.verifyMatch(points)) {
+    if (!board.isVerifyMatch(int targetColor, int& currentCount, int& points)) {
         board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
 
         std::cout << "No hubo match, intercambio revertido.\n";
@@ -102,38 +99,39 @@ void game::handleMove()
         processMatches();
     }
     board.createGemSprites();
-    firstClick = true;
+    animateGravity(window);
+    isFirstClick = true;
 }
 
 void game::handleMouseClick(sf::RenderWindow& window)
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        if (!mousePressed) { 
+        if (!isMousePressed) { 
             sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
             int currentCol = mousePosition.x / pixelSize;
             int currentRow = mousePosition.y / pixelSize;
             // CHECK: Código muy anidado, máximo 3 anidaciones
             if (currentCol >= 0 && currentCol < cols && currentRow >= 0 && currentRow < rows) {
 
-                if (firstClick) {
+                if (isFirstClick) {
                     rowFirstClick = currentRow;
                     colFirstClick = currentCol;
-                    firstClick = false;
+                    isFirstClick = false;
                 }
                 else {
                     rowSecondClick = currentRow;
                     colSecondClick = currentCol;
 
                     if (board.isAdjacent(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick)) {
-                        handleMove(); 
+                        handleMove(window);
                     }
                 }
             }
-            mousePressed = true; 
+            isMousePressed = true;
         }
     }
     else {
-        mousePressed = false;
+        isMousePressed = false;
     }
 }
 
@@ -177,17 +175,18 @@ void game::showBoardWindow()
 
 
     board.createGemTextures();
-    board.fillBoard();
-    board.verifyMatch(points);
+    board.isVerifyMatch(targetGemColor, currentCount, points);
+    board.fillBoard(); 
     processMatches();
     board.createGemSprites();
-
+    handleLevels(currentLevel)
 
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)// CHECK: Los if deben tener brackets
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
         }
         handleMouseClick(window);
         window.clear();
@@ -199,7 +198,7 @@ void game::showBoardWindow()
     }
 }
 
-void game::showFinalWindow()
+void game::showFinalLevelWindow()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "FinalWindow", sf::Style::Close);
 
@@ -214,8 +213,6 @@ void game::showFinalWindow()
         float(window.getSize().x) / backgroundTexture.getSize().x,
         float(window.getSize().y) / backgroundTexture.getSize().y
     );
-
-
 
     sf::Font font;
     if (!font.loadFromFile("assets/ELEGANT TYPEWRITER Regular.ttf")) {
@@ -238,6 +235,11 @@ void game::showFinalWindow()
     if (!exitTexture.loadFromFile("assets/exit.png")) {
         std::cout << "Error cargando imagen exit.png\n";
     }
+   
+    sf::Texture nextLevelTexture;
+    if (!nextLevelTexture.loadFromFile("assets/nextLevel.jpg")) {
+        std::cout << "Error cargando imagen nextLevel.jpg\n";
+    }
 
     sf::Sprite restartButton(restartTexture);
     restartButton.setPosition(130.f, 350.f);
@@ -246,6 +248,11 @@ void game::showFinalWindow()
     sf::Sprite exitButton(exitTexture);
     exitButton.setPosition(500.f, 350.f);
     exitButton.setScale(0.5f, 0.5f);
+
+
+    sf::Sprite nextLevelButton(nextLevelTexture);
+    nextLevelButton.setPosition(250.f, 190.f);
+    nextLevelButton.setScale(0.5f, 0.5f);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -258,15 +265,18 @@ void game::showFinalWindow()
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
+                if (nextLevelButton.getGlobalBounds().contains(mousePos.x, mousePos.y))
+                {
+                    increaseLevel();
+                    window.close();
+                    startNewLevel();  
+                }
+
+
                 if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     window.close();
-
-                    points = 0;
-                    movements = 20;
-                    board.fillBoard();
-                    processMatches();
-                    board.createGemSprites();
-                    showBoardWindow();
+                    handleLevels(currentLevel);
+                    startNewLevel();
                 }
 
                 if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
@@ -281,8 +291,180 @@ void game::showFinalWindow()
         window.draw(finalScoreText);
         window.draw(restartButton);
         window.draw(exitButton);
+        window.draw(nextLevelButton);
         window.display();
     }
 }
 
 
+void game::showGameOverdWindow()
+{
+    sf::RenderWindow window(sf::VideoMode(800, 600), "FinalWindow", sf::Style::Close);
+
+    sf::Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("assets/GameOverBackround.png")) {
+        std::cout << "Error: no se pudo cargar la imagen\n";
+    }
+
+    sf::Sprite background(backgroundTexture);
+
+    background.setScale(
+        float(window.getSize().x) / backgroundTexture.getSize().x,
+        float(window.getSize().y) / backgroundTexture.getSize().y
+    );
+
+    sf::Texture restartTexture;
+    if (!restartTexture.loadFromFile("assets/playAgain.png")) {
+        std::cout << "Error cargando imagen restart.png\n";
+    }
+
+
+    sf::Texture exitTexture;
+    if (!exitTexture.loadFromFile("assets/exit.png")) {
+        std::cout << "Error cargando imagen exit.png\n";
+    }
+
+    sf::Sprite restartButton(restartTexture);
+    restartButton.setPosition(130.f, 350.f);
+    restartButton.setScale(0.5f, 0.5f);
+    sf::Sprite exitButton(exitTexture);
+    exitButton.setPosition(500.f, 350.f);
+    exitButton.setScale(0.5f, 0.5f);
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+                if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    window.close();
+                    handleLevels(currentLevel);
+                    startNewLevel();
+                }
+
+                if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    window.close();
+                    exit(0);
+                }
+            }
+        }
+
+        window.clear();
+        window.draw(background);;
+        window.draw(restartButton);
+        window.draw(exitButton);
+        window.display();
+    }
+}
+
+
+void game::handleLevels(int level)
+{
+    currentLevel = level;
+
+    if (level == 1) {
+        targetGemColor = 0;   
+        targetGemCount = 15;
+        currentCount = 0;
+        cout << "Nivel 1: elimina 15 gemas rojas\n";
+    }
+    if (level == 2) {
+        targetGemColor = 1;   
+        targetGemCount = 25;
+        currentCount = 0;
+        cout << "Nivel 2: elimina 25 gemas verdes\n";
+    }
+    if (level == 3) {
+        targetGemColor = 2;  
+        targetGemCount = 30;
+        currentCount = 0;
+        cout << "Nivel 3: elimina 30 gemas azules\n";
+    }
+}
+
+void game::increaseLevel() {
+    int nextLevel = currentLevel + 1;
+
+    if (nextLevel > 3) {
+        cout << "¡Felicidades! Completaste todos los niveles\n";
+        showFinalLevelWindow();
+    }
+    else {
+        handleLevels(nextLevel);
+        board.fillBoard();
+        processMatches();
+        board.createGemSprites();
+    }
+}
+
+
+void game::verifyEndGame()
+{
+    if (movements <= 0)
+    {
+        if (currentCount >= targetGemCount) {
+
+            showFinalLevelWindow();
+        }
+        else {
+            showGameOverdWindow();
+        }
+    }
+}
+
+void game::startNewLevel()
+{
+    currentCount = 0;
+    points = 0;
+    movements = 20;
+
+    isFirstClick = true;
+    showBoardWindow();
+
+    handleLevels(currentLevel);
+}
+
+void game::animateGravity(sf::RenderWindow& window)
+{
+    bool needGravity = true;
+
+    while (needGravity)
+    {
+        needGravity = board.isVerifyMatch(targetGemColor, currentCount, points);
+
+        while (board.applyGravityStep())
+        {
+            board.createGemSprites();
+            window.clear();
+
+            sf::Texture backgroundTexture;
+            if (!backgroundTexture.loadFromFile("assets/backroundImage.png")) {
+                cout << "Error cargando background\n";
+            }
+            sf::Sprite background(backgroundTexture);
+            background.setScale(
+                float(window.getSize().x) / backgroundTexture.getSize().x,
+                float(window.getSize().y) / backgroundTexture.getSize().y
+            );
+            window.draw(background);
+
+            window.draw(pointsText);
+            window.draw(movementText);
+                       
+            board.draw(window);
+            
+            window.display();
+            sf::sleep(sf::milliseconds(50)); 
+        }        
+        board.fillEmptyCells();
+        board.createGemSprites();
+        needGravity = board.isVerifyMatch(targetGemColor, currentCount, points);
+    }
+    sf::sleep(sf::milliseconds(300));
+    verifyEndGame();
+}

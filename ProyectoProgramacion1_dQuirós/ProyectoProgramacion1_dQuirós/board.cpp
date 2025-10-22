@@ -6,6 +6,14 @@
 #include <iostream>
 using namespace std;
 
+board::~board() 
+{
+    for (int i = 0; i < gemType; i++) {
+        delete gemTextures[i];
+        gemTextures[i] = nullptr;
+    }
+}
+
 void board::fillBoard()
 {
     srand(time(0));
@@ -16,13 +24,21 @@ void board::fillBoard()
     }
 }
 
-void board::createGemTextures()
-{
-    gemTextures[0].setType(0, "assets/gemaRoja.png");
-    gemTextures[1].setType(1, "assets/gemaVerde.png");
-    gemTextures[2].setType(2, "assets/gemaAzul.png");
-    gemTextures[3].setType(3, "assets/gemaAmarilla.png");
-    gemTextures[4].setType(4, "assets/gemaMorada.png");
+void board::createGemTextures() {
+    gemTextures[0] = new NormalGem();
+    gemTextures[0]->setType(0, "assets/gemaRoja.png");
+
+    gemTextures[1] = new NormalGem();
+    gemTextures[1]->setType(1, "assets/gemaVerde.png");
+
+    gemTextures[2] = new NormalGem();
+    gemTextures[2]->setType(2, "assets/gemaAzul.png");
+
+    gemTextures[3] = new NormalGem();
+    gemTextures[3]->setType(3, "assets/gemaAmarilla.png");
+
+    gemTextures[4] = new NormalGem();
+    gemTextures[4]->setType(4, "assets/gemaMorada.png");
 }
 
 void board::createGemSprites()
@@ -30,7 +46,11 @@ void board::createGemSprites()
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
 
-            sf::Texture& spriteTexture = gemTextures[boardMatrix[i][j]].getTexture();
+            if (gemIndex == -1) {             
+                continue;
+            }
+
+            sf::Texture& spriteTexture = gemTextures[boardMatrix[i][j]]->getTexture();
 
             sprites[i][j].setTexture(spriteTexture);
             sprites[i][j].setPosition(j * pixelSize, i * pixelSize);
@@ -41,28 +61,29 @@ void board::createGemSprites()
     }
 }
 
-bool board::verifyMatch(int& points)
+bool board::isVerifyMatch(int targetColor, int& currentCount, int& points)
 {
     bool ismatch = false;
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            bool colMatch = (j >= 2 && boardMatrix[i][j] == boardMatrix[i][j - 1] && boardMatrix[i][j] == boardMatrix[i][j - 2]);
-            bool rowMatch = i >= 2 && boardMatrix[i][j] == boardMatrix[i - 1][j] && boardMatrix[i][j] == boardMatrix[i - 2][j];
-            // CHECK: Código muy anidado, máximo 3 anidaciones
-            if (colMatch)
-            {
-                boardMatrix[i][j] = rand() % gemType, points++;
-                boardMatrix[i][j - 1] = rand() % gemType, points++;
-                boardMatrix[i][j - 2] = rand() % gemType, points++;
-                ismatch = true;
-            }
+            
+            bool isColMatch = (i >= minStreakValues && boardMatrix[i][j] != -1 &&
+                boardMatrix[i][j] == boardMatrix[i - 1][j] &&
+                boardMatrix[i][j] == boardMatrix[i - 2][j]);
 
-            if (rowMatch)
-            {
-                boardMatrix[i][j] = rand() % gemType, points++;
-                boardMatrix[i - 1][j] = rand() % gemType, points++;
-                boardMatrix[i - 2][j] = rand() % gemType, points++;
-                ismatch = true;
+            bool isRrowMatch = (j >= minStreakValues && boardMatrix[i][j] != -1 &&
+                boardMatrix[i][j] == boardMatrix[i][j - 1] &&
+                boardMatrix[i][j] == boardMatrix[i][j - 2]);
+
+            if (isColMatch && isRrowMatch) {
+                verifyVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
+                verifyHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
+            }
+            else if (isColMatch) {
+                verifyVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
+            }
+            else if (isRrowMatch) {
+                verifyHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
         }
     }
@@ -82,12 +103,14 @@ void board::drawGemSprites(sf::RenderWindow& window)
 bool board::isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick)
 {
     bool isAdjacentSameRow = rowFirstClick == rowSecondClick && (colFirstClick == colSecondClick + 1 || colFirstClick == colSecondClick - 1);
-    if (isAdjacentSameRow)// CHECK: Los if deben tener brackets
+    if (isAdjacentSameRow) {
         return true;
+    }
 
     bool isAdjacentSameCol = colFirstClick == colSecondClick && (rowFirstClick == rowSecondClick + 1 || colSecondClick == rowSecondClick - 1);
-    if (isAdjacentSameCol)// CHECK: Los if deben tener brackets
+    if (isAdjacentSameCol) {
         return true;
+    }
 
     return false;
 }
@@ -95,4 +118,89 @@ bool board::isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick,
 void board::swapGems(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick)
 {
     swap(boardMatrix[rowFirstClick][colFirstClick], boardMatrix[rowSecondClick][colSecondClick]);
+}
+
+
+void board::verifyHorizontalStreak(int firstRow, int firstCol,
+    int targetColor, int& currentCount,
+    int& points, bool& isMatch){
+    if (minStreakValues < 3)
+    {
+        return;
+    }  
+
+    isMatch = true;
+    int gemColor = 0;
+    int currentRow = 0;
+    int currentCol = 0;
+
+    for (int i = 0; i < minStreakValues; i++) {
+         currentRow = firstRow;
+         currentCol = firstCol - i;
+
+         gemColor = boardMatrix[currentRow][currentCol];
+        if (gemColor != -1) {
+            points++;
+            if (gemColor == targetColor) {
+                currentCount++;
+                boardMatrix[currentRow][currentCol] = -1;
+            }
+        }
+    }
+}
+
+void board::verifyVerticalStreak(int firstRow, int firstCol, int targetColor,
+                                 int& currentCount, int& points, bool& isMatch){
+    if (minStreakValues < 3)
+    {
+        return;
+    }
+
+    isMatch = true;
+    int gemColor = 0;
+    int currentRow = 0;
+    int currentCol = 0;
+
+    for (int i = 0; i < minStreakValues; i++) {
+         currentRow = firstRow - i;
+         currentCol = firstCol;
+
+         gemColor = boardMatrix[currentRow][currentCol];
+        if (gemColor != -1) {
+            points++;
+            if (gemColor == targetColor) {
+                currentCount++;
+                boardMatrix[currentRow][currentCol] = -1;
+            }
+        }
+    }
+}
+
+
+bool board::applyGravity()
+{
+    bool moved = false;
+
+    for (int j = 0; j < cols; ++j) {
+        for (int i = rows - 2; i >= 0; --i) {
+            if (boardMatrix[i][j] != -1 && boardMatrix[i + 1][j] == -1) {
+
+                boardMatrix[i + 1][j] = boardMatrix[i][j];
+                boardMatrix[i][j] = -1;
+                moved = true;
+            }
+        }
+    }
+    return moved; 
+}
+
+void board::fillEmptyCells()
+{
+    for (int j = 0; j < cols; ++j) {
+        for (int i = 0; i < rows; ++i) {
+            if (boardMatrix[i][j] == -1) {
+                boardMatrix[i][j] = rand() % gemType;
+            }
+        }
+    }
 }

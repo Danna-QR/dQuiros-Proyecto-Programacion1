@@ -7,7 +7,7 @@ using namespace std;
 
 class gem
 {
-private:
+protected:
     int gemType;             
     sf::Texture texture;    
     sf::Sprite sprite;     
@@ -16,10 +16,11 @@ public:
 
 public:
     gem();
+    virtual ~gem();
 
     void setType(int t, const std::string& textureFile);
 
-    int getType() const;
-    sf::Sprite& getSprite();
-    sf::Texture& getTexture();
+    virtual int getType() const = 0;        
+    virtual sf::Sprite& getSprite() = 0;    
+    virtual sf::Texture& getTexture() = 0;  
 };
