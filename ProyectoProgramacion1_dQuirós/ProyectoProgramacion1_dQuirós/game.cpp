@@ -346,12 +346,8 @@ void game::showGameOverdWindow()
 
                 if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     window.close();
-                    points = 0;
-                    movements = 20;
-                    board.fillBoard();
-                    processMatches();
-                    board.createGemSprites();
-                    showBoardWindow();
+                    handleLevels(currentLevel);
+                    startNewLevel();
                 }
 
                 if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {

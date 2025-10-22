@@ -103,8 +103,7 @@ void board::swapGems(int rowFirstClick, int colFirstClick, int rowSecondClick, i
 
 void board::verifyHorizontalStreak(int firstRow, int firstCol,
     int targetColor, int& currentCount,
-    int& points, bool& isMatch)
-{
+    int& points, bool& isMatch){
     if (minStreakValues < 3)
     {
         return;
@@ -122,19 +121,20 @@ void board::verifyHorizontalStreak(int firstRow, int firstCol,
          gemColor = boardMatrix[currentRow][currentCol];
         if (gemColor != -1) {
             points++;
-            if (gemColor == targetColor) currentCount++;
-            boardMatrix[currentRow][currentCol] = -1;
+            if (gemColor == targetColor) {
+                currentCount++;
+                boardMatrix[currentRow][currentCol] = -1;
+            }
         }
     }
 }
 
 void board::verifyVerticalStreak(int firstRow, int firstCol, int targetColor,
-                                 int& currentCount, int& points, bool& isMatch)
-{
-
+                                 int& currentCount, int& points, bool& isMatch){
     if (minStreakValues < 3)
     {
-        return;}
+        return;
+    }
 
     isMatch = true;
     int gemColor = 0;
