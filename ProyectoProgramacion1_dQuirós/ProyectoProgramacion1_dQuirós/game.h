@@ -23,6 +23,11 @@ private:
 	sf::Text movementText;
 	sf::Text pointsText;
 
+	int currentLevel;     
+	int targetGemColor; 
+	int targetGemCount;      
+	int currentCount;     
+
 public:
 	game();
 	void showPrincipalWindow();
