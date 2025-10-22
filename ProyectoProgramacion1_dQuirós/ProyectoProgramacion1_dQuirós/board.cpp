@@ -83,12 +83,14 @@ void board::drawGemSprites(sf::RenderWindow& window)
 bool board::isAdjacent(int rowFirstClick, int colFirstClick, int rowSecondClick, int colSecondClick)
 {
     bool isAdjacentSameRow = rowFirstClick == rowSecondClick && (colFirstClick == colSecondClick + 1 || colFirstClick == colSecondClick - 1);
-    if (isAdjacentSameRow)// CHECK: Los if deben tener brackets
+    if (isAdjacentSameRow) {
         return true;
+    }
 
     bool isAdjacentSameCol = colFirstClick == colSecondClick && (rowFirstClick == rowSecondClick + 1 || colSecondClick == rowSecondClick - 1);
-    if (isAdjacentSameCol)// CHECK: Los if deben tener brackets
+    if (isAdjacentSameCol) {
         return true;
+    }
 
     return false;
 }
