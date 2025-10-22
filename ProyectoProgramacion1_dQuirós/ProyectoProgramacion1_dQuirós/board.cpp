@@ -47,22 +47,22 @@ bool board::isVerifyMatch(int targetColor, int& currentCount, int& points)
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             
-            bool colMatch = (i >= minStreakValues && boardMatrix[i][j] != -1 &&
+            bool isColMatch = (i >= minStreakValues && boardMatrix[i][j] != -1 &&
                 boardMatrix[i][j] == boardMatrix[i - 1][j] &&
                 boardMatrix[i][j] == boardMatrix[i - 2][j]);
 
-            bool rowMatch = (j >= minStreakValues && boardMatrix[i][j] != -1 &&
+            bool isRrowMatch = (j >= minStreakValues && boardMatrix[i][j] != -1 &&
                 boardMatrix[i][j] == boardMatrix[i][j - 1] &&
                 boardMatrix[i][j] == boardMatrix[i][j - 2]);
 
-            if (colMatch && rowMatch) {
+            if (isColMatch && isRrowMatch) {
                 processVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
                 processHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
-            else if (colMatch) {
+            else if (isColMatch) {
                 processVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
-            else if (rowMatch) {
+            else if (isRrowMatch) {
                 processHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
             }
         }
