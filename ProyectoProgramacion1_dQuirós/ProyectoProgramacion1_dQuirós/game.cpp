@@ -430,9 +430,8 @@ void game::startNewLevel()
     points = 0;
     movements = 20;
 
-    board.fillBoard();
-    processMatches();
-    board.createGemSprites();
+    isFirstClick = true;
     showBoardWindow();
+
     handleLevels(currentLevel);
 }
