@@ -77,6 +77,7 @@ void game::sumPoints(int& points)
 void game::processMatches()
 {
     while (board.isVerifyMatch(int targetColor, int& currentCount, int& points)) {
+        board.fillEmptyCells();
         board.createGemSprites();
     }
 }
