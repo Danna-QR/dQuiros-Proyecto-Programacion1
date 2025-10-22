@@ -6,6 +6,14 @@
 #include <iostream>
 using namespace std;
 
+board::~board() 
+{
+    for (int i = 0; i < gemType; i++) {
+        delete gemTextures[i];
+        gemTextures[i] = nullptr;
+    }
+}
+
 void board::fillBoard()
 {
     srand(time(0));

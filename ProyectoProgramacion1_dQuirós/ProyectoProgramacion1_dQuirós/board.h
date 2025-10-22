@@ -14,6 +14,7 @@ private:
     sf::Sprite sprites[rows][cols];
 
 public:
+    ~board();
     void fillBoard();
     void createGemTextures();
     void createGemSprites();
