@@ -43,4 +43,5 @@ public:
 	void handleLevels(int level);
 	void increaseLevel();
 	void verifyEndGame();
+	void startNewLevel();
 };

@@ -406,3 +406,16 @@ void game::verifyEndGame()
         }
     }
 }
+
+void game::startNewLevel()
+{
+    currentCount = 0;
+    points = 0;
+    movements = 20;
+
+    board.fillBoard();
+    processMatches();
+    board.createGemSprites();
+    showBoardWindow();
+    handleLevels(currentLevel);
+}
