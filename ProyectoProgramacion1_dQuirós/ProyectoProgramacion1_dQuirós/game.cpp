@@ -84,7 +84,6 @@ void game::processMatches()
 void game::handleMove(sf::RenderWindow& window)
 {
     board.swapGems(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick);
-    board.createGemSprites();
     std::cout << "Intercambio realizado!\n";
 
     if (!board.isVerifyMatch(int targetColor, int& currentCount, int& points)) {
@@ -99,6 +98,7 @@ void game::handleMove(sf::RenderWindow& window)
         processMatches();
     }
     board.createGemSprites();
+    animateGravity(window);
     isFirstClick = true;
 }
 
@@ -122,7 +122,7 @@ void game::handleMouseClick(sf::RenderWindow& window)
                     colSecondClick = currentCol;
 
                     if (board.isAdjacent(rowFirstClick, colFirstClick, rowSecondClick, colSecondClick)) {
-                        handleMove(); 
+                        handleMove(window);
                     }
                 }
             }
