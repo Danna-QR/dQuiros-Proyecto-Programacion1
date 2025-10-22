@@ -9,7 +9,7 @@ void game::showPrincipalWindow()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Match - 3", sf::Style::Close);
 
-    bool isOpenBoardWindow = false;// CHECK
+    bool isOpenBoardWindow = false;
 
     sf::Texture buttonTexture;
     if (!buttonTexture.loadFromFile("assets/play.png")) {
