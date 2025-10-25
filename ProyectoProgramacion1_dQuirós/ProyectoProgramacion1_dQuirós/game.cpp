@@ -35,6 +35,7 @@ void game::showPrincipalWindow()
         sf::Event event;
         while (window.pollEvent(event)) {
             // CHECK: Código muy anidado, máximo 3 anidaciones
+            // NOTE: Code too nested
             if (event.type == sf::Event::Closed)// CHECK: Los if deben tener brackets
                 window.close();
 
@@ -111,6 +112,7 @@ void game::handleMouseClick(sf::RenderWindow& window)
             int currentCol = mousePosition.x / pixelSize;
             int currentRow = mousePosition.y / pixelSize;
             // CHECK: Código muy anidado, máximo 3 anidaciones
+            // NOTE: Code too nested
             if (currentCol >= 0 && currentCol < cols && currentRow >= 0 && currentRow < rows) {
 
                 if (isFirstClick) {
@@ -258,6 +260,7 @@ void game::showFinalLevelWindow()
         sf::Event event;
         while (window.pollEvent(event)) {
             // CHECK: Código muy anidado, máximo 3 anidaciones
+            // NOTE: Code too nested
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
@@ -334,6 +337,7 @@ void game::showGameOverdWindow()
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
+            // NOTE: Code too nested
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
@@ -443,6 +447,7 @@ void game::animateGravity(sf::RenderWindow& window)
             window.clear();
 
             sf::Texture backgroundTexture;
+            // NOTE: Code too nested
             if (!backgroundTexture.loadFromFile("assets/backroundImage.png")) {
                 cout << "Error cargando background\n";
             }

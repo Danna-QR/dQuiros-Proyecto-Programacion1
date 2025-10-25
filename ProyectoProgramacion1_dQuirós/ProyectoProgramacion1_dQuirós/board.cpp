@@ -45,7 +45,7 @@ void board::createGemSprites()
 {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-
+// NOTE: Code too nested
             if (gemIndex == -1) {             
                 continue;
             }
@@ -74,7 +74,7 @@ bool board::isVerifyMatch(int targetColor, int& currentCount, int& points)
             bool isRrowMatch = (j >= minStreakValues && boardMatrix[i][j] != -1 &&
                 boardMatrix[i][j] == boardMatrix[i][j - 1] &&
                 boardMatrix[i][j] == boardMatrix[i][j - 2]);
-
+// NOTE: Code too nested
             if (isColMatch && isRrowMatch) {
                 verifyVerticalStreak(i, j, targetColor, currentCount, points, isMatch);
                 verifyHorizontalStreak(i, j, targetColor, currentCount, points, isMatch);
@@ -168,6 +168,7 @@ void board::verifyVerticalStreak(int firstRow, int firstCol, int targetColor,
          gemColor = boardMatrix[currentRow][currentCol];
         if (gemColor != -1) {
             points++;
+            // NOTE: Code too nested
             if (gemColor == targetColor) {
                 currentCount++;
                 boardMatrix[currentRow][currentCol] = -1;
@@ -183,6 +184,7 @@ bool board::applyGravity()
 
     for (int j = 0; j < cols; ++j) {
         for (int i = rows - 2; i >= 0; --i) {
+            // NOTE: Code too nested
             if (boardMatrix[i][j] != -1 && boardMatrix[i + 1][j] == -1) {
 
                 boardMatrix[i + 1][j] = boardMatrix[i][j];
@@ -198,6 +200,7 @@ void board::fillEmptyCells()
 {
     for (int j = 0; j < cols; ++j) {
         for (int i = 0; i < rows; ++i) {
+            // NOTE: Code too nested
             if (boardMatrix[i][j] == -1) {
                 boardMatrix[i][j] = rand() % gemType;
             }
